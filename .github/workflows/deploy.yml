@@ -41,6 +41,12 @@ jobs:
           black --check src/
           flake8 src/ --max-line-length 99
 
+      - name: Install Databricks CLI
+        run: pip install databricks-cli
+
+      - name: Verify Databricks CLI Installation
+        run: databricks --version
+
       - name: Configure Databricks CLI
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
@@ -59,7 +65,6 @@ jobs:
         run: | 
            echo \"Databricks Host Length: \" ${#DATABRICKS_HOST}
 
-          
 
       - name: Validate Databricks credentials
         env:
@@ -74,7 +79,7 @@ jobs:
 
       - name: Sync Databricks repository
         env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_HOST: https://${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
           GITHUB_REPO_URL: "https://github.com/${{ github.repository }}.git"
           ENVIRONMENT: ${{ inputs.environment || 'production' }}
