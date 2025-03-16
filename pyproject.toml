@@ -23,7 +23,7 @@ dependencies = [
 
 [project.optional-dependencies]
 prod = [
-    "databricks-cli"
+    "databricks-cli",
     "black>=23.0",
     "flake8>=6.0",
     "pytest>=7.0",
