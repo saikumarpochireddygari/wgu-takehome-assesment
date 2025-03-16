@@ -3,9 +3,6 @@ name: Databricks ML Deployment
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
-    types: [closed]
   workflow_dispatch:
     inputs:
       environment:
