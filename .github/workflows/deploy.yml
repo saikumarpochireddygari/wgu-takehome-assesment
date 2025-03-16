@@ -40,6 +40,24 @@ jobs:
           set -euxo pipefail
           black --check src/
           flake8 src/ --max-line-length 99
+
+      - name: Configure Databricks CLI
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: |
+          mkdir -p ~/.databricks
+          cat <<EOF > ~/.databricks/config
+          [DEFAULT]
+          host = ${DATABRICKS_HOST}
+          token = ${DATABRICKS_TOKEN}
+          EOF
+
+      - name: Debug Databricks Host
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+        run: | 
+          echo "Databricks Host is: ${DATABRICKS_HOST}"
           
 
       - name: Validate Databricks credentials
@@ -80,3 +98,4 @@ jobs:
             --databricks-host "$DATABRICKS_HOST" \
             --databricks-token "$DATABRICKS_TOKEN" \
             --environment "$ENVIRONMENT"
+            
