@@ -54,10 +54,10 @@ jobs:
         run: |
           mkdir -p ~/.databricks
           cat <<EOF > ~/.databricks/config
-[DEFAULT]
-host = ${DATABRICKS_HOST}
-token = ${DATABRICKS_TOKEN}
-EOF
+          [DEFAULT]
+          host = ${DATABRICKS_HOST}
+          token = ${DATABRICKS_TOKEN}
+          EOF
 
       - name: Debug Databricks Host
         env:
@@ -79,7 +79,7 @@ EOF
 
       - name: Create parent folder for Databricks repo
         env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_HOST: https://${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
         run: |
           databricks workspace mkdirs /Repos/${{ inputs.environment || 'production' }}
