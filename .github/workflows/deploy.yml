@@ -41,9 +41,6 @@ jobs:
           black --check src/
           flake8 src/ --max-line-length 99
 
-      - name: Install Databricks CLI
-        run: pip install databricks-cli
-
       - name: Verify Databricks CLI Installation
         run: databricks --version
 
