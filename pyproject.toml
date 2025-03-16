@@ -15,7 +15,7 @@ authors = [
 keywords = ["databricks", "mlops", "ci-cd", "python"]
 
 dependencies = [
-    "databricks-sdk>=0.15.0",
+    "databricks-sdk>=0.20.0",
     "pydantic>=2.0",
     "pyyaml>=6.0",
     "python-dotenv>=1.0",
