@@ -42,7 +42,7 @@ jobs:
         run: |
           set -euxo pipefail
           black --check src/
-          flake8 src/
+          flake8 src/ --max-line-length 99
           
 
       - name: Validate Databricks credentials

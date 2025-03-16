@@ -1,5 +1,5 @@
 from databricks.sdk import WorkspaceClient
-from databricks.sdk.service.jobs import JobSettings, Task, NotebookTask, Schedule
+from databricks.sdk.service.jobs import JobSettings, Task, Schedule, NotebookTask
 from pathlib import Path
 from typing import Any, Dict
 
