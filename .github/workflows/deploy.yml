@@ -62,9 +62,9 @@ jobs:
       - name: Debug Databricks Host
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-        run: | 
-           echo \"Databricks Host Length: \" ${#DATABRICKS_HOST}
-
+        run: |
+          echo "Databricks Host Length: ${#DATABRICKS_HOST}"
+          echo "Databricks Host (first 8 chars): ${DATABRICKS_HOST:0:8}"
 
       - name: Validate Databricks credentials
         env:
@@ -77,8 +77,16 @@ jobs:
           ./utilities_bash_scripts/validate_user.sh
           ./utilities_bash_scripts/validate_databricks_token.sh
 
+      - name: Create parent folder for Databricks repo
+        env:
+          DATABRICKS_HOST: https://${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: |
+          databricks workspace mkdirs /Repos/${{ inputs.environment || 'production' }}
+
       - name: Sync Databricks repository
         env:
+          # Prepend https:// to ensure proper format if needed
           DATABRICKS_HOST: https://${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
           GITHUB_REPO_URL: "https://github.com/${{ github.repository }}.git"
@@ -104,4 +112,3 @@ jobs:
             --databricks-host "$DATABRICKS_HOST" \
             --databricks-token "$DATABRICKS_TOKEN" \
             --environment "$ENVIRONMENT"
-            
