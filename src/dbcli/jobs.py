@@ -46,12 +46,15 @@ class DatabricksJobManager:
             tasks=[
                 jobs.Task(
                     task_key=config.name.lower().replace(" ", "_"),
-                    notebook_task=jobs.NotebookTask(notebook_path=config.notebook_path),
-                    new_cluster=config.cluster,
+                    notebook_task=jobs.NotebookTask(
+                        notebook_path=config.notebook_path
+                    ),
+                    new_cluster=jobs.ClusterSpec(**config.cluster),
                 )
             ],
             schedule=jobs.CronSchedule(
-                quartz_cron_expression=config.schedule, timezone_id="UTC"
+                quartz_cron_expression=config.schedule,
+                timezone_id="UTC"
             ),
             tags=config.tags,
         )
