@@ -2,7 +2,7 @@
 
 ## Databricks Machine Learning Deployment Pipeline
 
-[![CI/CD](https://github.com/your-username/your-repo/actions/workflows/deploy.yml/badge.svg)](https://github.com/your-username/your-repo/actions)
+[![CI/CD](https://github.com/saikumarpochireddygari/wgu-takehome-assesment/actions/workflows/deploy.yml/badge.svg)](https://github.com/your-username/your-repo/actions)
 [![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/)
 [![Databricks](https://img.shields.io/badge/Databricks-Runtime_13.3-red)](https://docs.databricks.com/)
 
