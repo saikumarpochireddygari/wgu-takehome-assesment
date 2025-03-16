@@ -1,5 +1,6 @@
 from databricks.sdk import WorkspaceClient
-#from databricks.sdk.service.jobs import JobSettings, Task, Schedule, NotebookTask
+
+# from databricks.sdk.service.jobs import JobSettings, Task, Schedule, NotebookTask
 from databricks.sdk.service import jobs
 from pathlib import Path
 from typing import Any, Dict
@@ -46,11 +47,13 @@ class DatabricksJobManager:
                 tasks=[
                     jobs.Task(
                         task_key=config.name.lower().replace(" ", "_"),
-                        notebook_task=jobs.NotebookTask(notebook_path=config.notebook_path),
+                        notebook_task=jobs.NotebookTask(
+                            notebook_path=config.notebook_path
+                        ),
                         new_cluster=config.cluster,
                     )
                 ],
-                schedule=jobs.Schedule(
+                schedule=jobs.CronSchedule(
                     quartz_cron_expression=config.schedule, timezone_id="UTC"
                 ),
                 tags=config.tags,
