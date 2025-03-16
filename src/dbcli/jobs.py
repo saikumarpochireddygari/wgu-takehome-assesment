@@ -42,20 +42,19 @@ class DatabricksJobManager:
     def create_job(self, config_file: str):
         config = self._load_config(config_file)
         return self.client.jobs.create(
-            job_settings=jobs.JobSettings(
-                name=config.name,
-                tasks=[
-                    jobs.Task(
-                        task_key=config.name.lower().replace(" ", "_"),
-                        notebook_task=jobs.NotebookTask(
-                            notebook_path=config.notebook_path
-                        ),
-                        new_cluster=config.cluster,
-                    )
-                ],
-                schedule=jobs.CronSchedule(
-                    quartz_cron_expression=config.schedule, timezone_id="UTC"
-                ),
-                tags=config.tags,
-            )
+            name=config.name,
+            tasks=[
+                jobs.Task(
+                    task_key=config.name.lower().replace(" ", "_"),
+                    notebook_task=jobs.NotebookTask(
+                        notebook_path=config.notebook_path
+                    ),
+                    new_cluster=config.cluster,
+                )
+            ],
+            schedule=jobs.CronSchedule(
+                quartz_cron_expression=config.schedule,
+                timezone_id="UTC"
+            ),
+            tags=config.tags,
         )
