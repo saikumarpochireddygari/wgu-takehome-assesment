@@ -1,0 +1,119 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+*.egg
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+venv/
+env/
+venv*/
+ENV/
+env.bak/
+venv.bak/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+*.code-workspace
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Databricks
+.databricks/
+*.dbc
+/dbfs/
+/FileStore/
+/Volumes/
+
+# Local configurations
+*.env
+*.cfg
+*.conf
+secrets.*
+config.local.*
+
+# Test and coverage
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# Logs and databases
+*.log
+logs/
+*.sqlite
+*.db
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Local development
+.python-version
+debug/
+debug_*.py
+scratch/
+temp/
+
+# Build/CI
+target/
+.settings/
+.project
+.pydevproject
+*.iml
+
+# Dependency directories
+site-packages/
+node_modules/
+bower_components/
+
+# Misc
+*.bak
+*.tmp
+*~
+*.orig
+*.class
+*.diff
+*.error
+*.pid
+*.seed
+*.pid.lock
+
+# Custom exclusions
+mlruns/
+artifacts/
+model-registry/
+notebooks/.sync/
+*.parquet
+*.csv
+*.tsv
+*.jsonl
+
+# Local user-specific files
+.local/
+.cache/

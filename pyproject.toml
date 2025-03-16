@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dbcli"
+version = "0.1.0"
+description = "Databricks CI/CD Deployment Tool"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Sai", email = "pochireddygari@gmail.com" }
+]
+
+keywords = ["databricks", "mlops", "ci-cd", "python"]
+
+dependencies = [
+    "databricks-sdk>=0.15.0",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+prod = [
+    "black>=23.0",
+    "flake8>=6.0",
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/wgu-takehome-assesment"
+Documentation = "https://github.com/yourusername/wgu-takehome-assesment/README.md"
+
+[project.scripts]
+dbcli = "dbcli.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+package-dir = { "" = "src" }

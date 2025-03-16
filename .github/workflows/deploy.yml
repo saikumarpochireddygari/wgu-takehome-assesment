@@ -1,0 +1,85 @@
+name: Databricks ML Deployment
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || 'production' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install system dependencies
+        run: sudo apt-get install -y jq
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e ".[prod]"
+
+      - name: Run code quality checks
+        run: |
+          set -euxo pipefail
+          black --check src/
+          flake8 src/
+          
+
+      - name: Validate Databricks credentials
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: |
+          set -euxo pipefail
+          chmod +x ./utilities_bash_scripts/validate_user.sh
+          chmod +x ./utilities_bash_scripts/validate_databricks_token.sh
+          ./utilities_bash_scripts/validate_user.sh
+          ./utilities_bash_scripts/validate_databricks_token.sh
+
+      - name: Sync Databricks repository
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+          GITHUB_REPO_URL: "https://github.com/${{ github.repository }}.git"
+          ENVIRONMENT: ${{ inputs.environment || 'production' }}
+        run: |
+          set -euxo pipefail
+          # Clean existing repo if present
+          databricks repos delete --path "/Repos/$ENVIRONMENT/ml-repo" || true
+          # Create fresh repo sync
+          databricks repos create \
+            --url "$GITHUB_REPO_URL" \
+            --provider gitHub \
+            --path "/Repos/$ENVIRONMENT/ml-repo"
+
+      - name: Deploy Databricks jobs
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+          ENVIRONMENT: ${{ inputs.environment || 'production' }}
+        run: |
+          set -euxo pipefail
+          python -m dbcli.cli \
+            --databricks-host "$DATABRICKS_HOST" \
+            --databricks-token "$DATABRICKS_TOKEN" \
+            --environment "$ENVIRONMENT"
