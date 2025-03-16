@@ -1,6 +1,6 @@
 # wgu-takehome-assesment
 
-<!DOCTYPE html>
+
 <html>
 <head>
     <title>Databricks ML Deployment Pipeline</title>
