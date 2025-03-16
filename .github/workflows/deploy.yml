@@ -57,7 +57,8 @@ jobs:
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
         run: | 
-          echo "Databricks Host is: ${DATABRICKS_HOST}"
+           echo \"Databricks Host Length: \" ${#DATABRICKS_HOST}
+
           
 
       - name: Validate Databricks credentials
