@@ -34,5 +34,3 @@ A production-grade framework for deploying and managing machine learning workflo
   Bash scripts for credential and permission checks
 - **Unity Catalog Integration**  
   Model versioning and inference storage
-
-## Project Structure
