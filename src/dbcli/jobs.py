@@ -42,11 +42,11 @@ class DatabricksJobManager:
     def create_job(self, config_file: str):
         config = self._load_config(config_file)
         # Extract the inner dictionary from the 'new_cluster' key
-        cluster_config = config.cluster.get("new_cluster")
+        # cluster_config = config.cluster.get("new_cluster")
 
-        new_cluster_instance = jobs.JobCluster.parse_obj(
-            {"job_cluster_key": "new_cluster", **cluster_config}
-        )
+        # new_cluster_instance = jobs.JobCluster.parse_obj(
+        #     {"job_cluster_key": "new_cluster", **cluster_config}
+        # )
 
         return self.client.jobs.create(
             name=config.name,
@@ -54,7 +54,7 @@ class DatabricksJobManager:
                 jobs.Task(
                     task_key=config.name.lower().replace(" ", "_"),
                     notebook_task=jobs.NotebookTask(notebook_path=config.notebook_path),
-                    new_cluster=new_cluster_instance,
+                    new_cluster=jobs.JobCluster(**config.cluster),
                 )
             ],
             schedule=jobs.CronSchedule(

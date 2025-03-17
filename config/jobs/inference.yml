@@ -2,12 +2,11 @@ name: "Daily Iris Inference - {environment}"
 notebook_path: "/Repos/{environment}/ml-repo/notebooks/inference"
 schedule: "0 0 * * *"
 cluster:
-  new_cluster:
-    spark_version: "13.3.x-scala2.12"
-    node_type_id: "Standard_F4s_v2"
-    autoscale:
-      min_workers: 1
-      max_workers: 2
+  spark_version: "13.3.x-scala2.12"
+  node_type_id: "Standard_F4s_v2"
+  autoscale:
+    min_workers: 1
+    max_workers: 2
 tags:
   purpose: "inference"
   workflow_owner: "pochireddygari@gmail.com"
