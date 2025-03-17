@@ -3,7 +3,7 @@ notebook_path: "/Repos/{environment}/ml-repo/notebooks/train"
 schedule: "0 0 1 * *"
 cluster:
   spark_version: "13.3.x-scala2.12"
-  node_type_id: "Standard_F4s"
+  node_type_id: "c5a.large"
   num_workers: 2
 tags:
   purpose: "training"
