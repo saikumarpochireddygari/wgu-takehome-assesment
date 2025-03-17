@@ -41,18 +41,7 @@ class DatabricksJobManager:
 
     def create_job(self, config_file: str):
         config = self._load_config(config_file)
-        cluster_config = config.cluster  # Use the entire dictionary from YAML
-
-        # Create a cluster using the WorkspaceClient.
-        # Adjust parameters as needed; here we use keys from the YAML.
-        cluster_response = self.client.clusters.create(
-            cluster_name=f"{config.name}-cluster-{self.environment}",
-            spark_version=cluster_config.get("spark_version"),
-            node_type_id=cluster_config.get("node_type_id"),
-            num_workers=cluster_config.get("num_workers"),
-            autoscale=cluster_config.get("autoscale"),
-            autotermination_minutes=cluster_config.get("autotermination_minutes", 15),
-        ).result()
+        cluster_spec = config.cluster.get("new_cluster")
 
         return self.client.jobs.create(
             name=config.name,
@@ -63,8 +52,8 @@ class DatabricksJobManager:
                         notebook_path=config.notebook_path,
                         source=jobs.Source("WORKSPACE"),
                     ),
-                    # Use the existing_cluster_id parameter to specify an existing cluster
-                    existing_cluster_id=cluster_response.cluster_id,
+                    # Use the new_cluster parameter directly
+                    new_cluster=jobs.JobCluster(**cluster_spec),
                 )
             ],
             schedule=jobs.CronSchedule(
