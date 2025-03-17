@@ -47,7 +47,9 @@ class DatabricksJobManager:
                 jobs.Task(
                     task_key=config.name.lower().replace(" ", "_"),
                     notebook_task=jobs.NotebookTask(notebook_path=config.notebook_path),
-                    new_cluster=jobs.JobCluster(**config.cluster),
+                    new_cluster=jobs.JobCluster(
+                        job_cluster_key="new_cluster", **config.cluster
+                    ),
                 )
             ],
             schedule=jobs.CronSchedule(
