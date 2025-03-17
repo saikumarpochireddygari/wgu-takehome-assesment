@@ -41,21 +41,34 @@ class DatabricksJobManager:
 
     def create_job(self, config_file: str):
         config = self._load_config(config_file)
+        cluster_config = config.cluster  # Use the entire dictionary from YAML
+
+        # Create a cluster using the WorkspaceClient.
+        # Adjust parameters as needed; here we use keys from the YAML.
+        cluster_response = self.client.clusters.create(
+            cluster_name=f"{config.name}-cluster-{self.environment}",
+            spark_version=cluster_config.get("spark_version"),
+            node_type_id=cluster_config.get("node_type_id"),
+            num_workers=cluster_config.get("num_workers"),
+            autoscale=cluster_config.get("autoscale"),
+            autotermination_minutes=cluster_config.get("autotermination_minutes", 15),
+        ).result()
 
         return self.client.jobs.create(
-            name=config.name,
-            tasks=[
-                jobs.Task(
-                    task_key=config.name.lower().replace(" ", "_"),
-                    notebook_task=jobs.NotebookTask(
-                        notebook_path=config.notebook_path,
-                        source=jobs.Source("WORKSPACE"),
-                    ),
-                    new_cluster=jobs.ClusterSpec(**config.cluster),
-                )
-            ],
-            schedule=jobs.CronSchedule(
-                quartz_cron_expression=config.schedule, timezone_id="UTC"
-            ),
-            tags=config.tags,
-        )
+        name=config.name,
+        tasks=[
+            jobs.Task(
+                task_key=config.name.lower().replace(" ", "_"),
+                notebook_task=jobs.NotebookTask(
+                    notebook_path=config.notebook_path,
+                    source=jobs.Source("WORKSPACE")
+                ),
+                # Use the existing_cluster_id parameter to specify an existing cluster
+                existing_cluster_id=cluster_response.cluster_id,
+            )
+        ],
+        schedule=jobs.CronSchedule(
+            quartz_cron_expression=config.schedule, timezone_id="UTC"
+        ),
+        tags=config.tags,
+    )
