@@ -3,7 +3,7 @@ notebook_path: "/Repos/{environment}/ml-repo/notebooks/inference"
 schedule: "0 0 * * *"
 cluster:
   spark_version: "13.3.x-scala2.12"
-  node_type_id: "c5x.large"
+  node_type_id: "m5d.large"
   num_workers: 2
   autotermination_minutes: 15
 tags:
