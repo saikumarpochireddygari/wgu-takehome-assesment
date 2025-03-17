@@ -42,16 +42,15 @@ class DatabricksJobManager:
     def create_job(self, config_file: str):
         config = self._load_config(config_file)
         print(f"inside of create_job_method config data is ------->, {config}")
-
         cluster_spec = config["cluster"]["new_cluster"]
 
         return self.client.jobs.create(
-            name=config.name,
+            name=config["name"],
             tasks=[
                 jobs.Task(
-                    task_key=config.name.lower().replace(" ", "_"),
+                    task_key=config["name"].lower().replace(" ", "_"),
                     notebook_task=jobs.NotebookTask(
-                        notebook_path=config.notebook_path,
+                        notebook_path=config["notebook_path"],
                         source=jobs.Source("WORKSPACE"),
                     ),
                     # Use the new_cluster parameter directly
@@ -59,7 +58,7 @@ class DatabricksJobManager:
                 )
             ],
             schedule=jobs.CronSchedule(
-                quartz_cron_expression=config.schedule, timezone_id="UTC"
+                quartz_cron_expression=config["schedule"], timezone_id="UTC"
             ),
-            tags=config.tags,
+            tags=config["tags"],
         )
