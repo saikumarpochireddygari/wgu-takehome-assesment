@@ -1,5 +1,10 @@
 # Databricks notebook source
-# %pip install mlflow>=2.10.1 scikit-learn>=1.3.0 pandas>=2.0.0
+
+# COMMAND ----------
+# %pip install mlflow>=2.10.1 scikit-learn>=1.3.0 pandas>=2.0.0 typing_extensions
+
+# COMMAND ----------
+dbutils.library.restartPython()
 
 # COMMAND ----------
 
@@ -8,6 +13,9 @@ import pandas as pd
 import numpy as np
 from sklearn.datasets import load_iris
 from datetime import datetime
+
+# COMMAND ----------
+mlflow.set_registry_uri("databricks-uc")
 
 # COMMAND ----------
 # Load model

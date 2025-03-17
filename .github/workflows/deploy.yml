@@ -40,21 +40,6 @@ jobs:
           black --check src/
           flake8 src/ --max-line-length 99
 
-      - name: Verify Databricks CLI Installation
-        run: databricks --version
-
-      - name: Configure Databricks CLI
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-        run: |
-          mkdir -p ~/.databricks
-          cat <<EOF > ~/.databricks/config
-          [DEFAULT]
-          host = ${DATABRICKS_HOST}
-          token = ${DATABRICKS_TOKEN}
-          EOF
-
       - name: Debug Databricks Host
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
@@ -72,30 +57,6 @@ jobs:
           chmod +x ./utilities_bash_scripts/validate_databricks_token.sh
           ./utilities_bash_scripts/validate_user.sh
           ./utilities_bash_scripts/validate_databricks_token.sh
-
-      - name: Create parent folder for Databricks repo
-        env:
-          DATABRICKS_HOST: https://${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-        run: |
-          databricks workspace mkdirs /Repos/${{ inputs.environment || 'production' }}
-
-      - name: Sync Databricks repository
-        env:
-          # Prepend https:// to ensure proper format if needed
-          DATABRICKS_HOST: https://${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-          GITHUB_REPO_URL: "https://github.com/${{ github.repository }}.git"
-          ENVIRONMENT: ${{ inputs.environment || 'production' }}
-        run: |
-          set -euxo pipefail
-          # Clean existing repo if present
-          databricks repos delete --path "/Repos/$ENVIRONMENT/ml-repo" || true
-          # Create fresh repo sync
-          databricks repos create \
-            --url "$GITHUB_REPO_URL" \
-            --provider gitHub \
-            --path "/Repos/$ENVIRONMENT/ml-repo"
 
       - name: Deploy Databricks jobs
         env:

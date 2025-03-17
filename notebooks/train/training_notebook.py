@@ -1,5 +1,9 @@
 # Databricks notebook source
-# %pip install mlflow>=2.10.1 scikit-learn>=1.3.0 pandas>=2.0.0
+# COMMAND ----------
+# %pip install mlflow>=2.10.1 scikit-learn>=1.3.0 pandas>=2.0.0 typing_extensions
+
+# COMMAND ----------
+dbutils.library.restartPython()
 
 # COMMAND ----------
 import mlflow
@@ -20,6 +24,22 @@ data = pd.DataFrame(np.c_[iris.data, iris.target],
 train_data = data.sample(100, random_state=42)
 X_train = train_data[iris.feature_names]
 y_train = train_data['target']
+
+# COMMAND ----------
+experiment_name = "/Shared/production-iris-exp"
+
+# Check if the experiment exists
+experiment = mlflow.get_experiment_by_name(experiment_name)
+
+if experiment is None:
+    # Create the experiment if it does not exist
+    experiment_id = mlflow.create_experiment(experiment_name)
+else:
+    experiment_id = experiment.experiment_id
+
+# Set the experiment
+mlflow.set_experiment(experiment_name)
+mlflow.set_registry_uri("databricks-uc")
 
 # COMMAND ----------
 # Train model

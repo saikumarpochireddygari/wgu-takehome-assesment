@@ -1,10 +1,11 @@
 name: "Monthly Iris Training - {environment}"
-notebook_path: "/Repos/{environment}/ml-repo/notebooks/train"
+notebook_path: "/Repos/{environment}/ml-repo/notebooks/train/training_notebook"
 schedule: "0 0 1 1 * ?"
 cluster:
-  spark_version: "13.3.x-scala2.12"
-  node_type_id: "m5d.large"
-  num_workers: 2
+  new_cluster:
+    spark_version: "13.3.x-scala2.12"
+    node_type_id: "r5d.large"
+    num_workers: 2
 tags:
   purpose: "training"
   workflow_owner: "pochireddygari@gmail.com"
