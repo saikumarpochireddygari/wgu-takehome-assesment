@@ -55,20 +55,20 @@ class DatabricksJobManager:
         ).result()
 
         return self.client.jobs.create(
-        name=config.name,
-        tasks=[
-            jobs.Task(
-                task_key=config.name.lower().replace(" ", "_"),
-                notebook_task=jobs.NotebookTask(
-                    notebook_path=config.notebook_path,
-                    source=jobs.Source("WORKSPACE")
-                ),
-                # Use the existing_cluster_id parameter to specify an existing cluster
-                existing_cluster_id=cluster_response.cluster_id,
-            )
-        ],
-        schedule=jobs.CronSchedule(
-            quartz_cron_expression=config.schedule, timezone_id="UTC"
-        ),
-        tags=config.tags,
-    )
+            name=config.name,
+            tasks=[
+                jobs.Task(
+                    task_key=config.name.lower().replace(" ", "_"),
+                    notebook_task=jobs.NotebookTask(
+                        notebook_path=config.notebook_path,
+                        source=jobs.Source("WORKSPACE"),
+                    ),
+                    # Use the existing_cluster_id parameter to specify an existing cluster
+                    existing_cluster_id=cluster_response.cluster_id,
+                )
+            ],
+            schedule=jobs.CronSchedule(
+                quartz_cron_expression=config.schedule, timezone_id="UTC"
+            ),
+            tags=config.tags,
+        )
