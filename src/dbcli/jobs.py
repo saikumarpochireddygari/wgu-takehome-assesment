@@ -37,10 +37,11 @@ class DatabricksJobManager:
         if "tags" in config_data:
             config_data["tags"]["environment"] = self.environment
 
-        return JobConfig(**config_data)
+        return config_data
 
     def create_job(self, config_file: str):
         config = self._load_config(config_file)
+        print(f"inside of create_job_method config data is ------->, {config}")
         cluster_spec = config.cluster.get("new_cluster")
 
         return self.client.jobs.create(
