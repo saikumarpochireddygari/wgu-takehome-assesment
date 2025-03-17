@@ -42,6 +42,7 @@ class DatabricksJobManager:
     def create_job(self, config_file: str):
         config = self._load_config(config_file)
         print(f"inside of create_job_method config data is ------->, {config}")
+
         cluster_spec = config["cluster"]["new_cluster"]
 
         return self.client.jobs.create(
