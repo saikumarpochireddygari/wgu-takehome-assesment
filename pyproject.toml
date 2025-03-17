@@ -15,16 +15,15 @@ authors = [
 keywords = ["databricks", "mlops", "ci-cd", "python"]
 
 dependencies = [
-    "databricks-sdk>=0.20.0",
-    "pydantic>=2.0",
-    "pyyaml>=6.0",
-    "python-dotenv>=1.0",
-    "databricks-cli"
+    "databricks-sdk>=0.20.0,<0.21.0",
+    "databricks-cli>=0.17.0",
+    "pydantic>=2.0,<3.0",
+    "pyyaml>=6.0,<7.0",
+    "python-dotenv>=1.0,<2.0"
 ]
 
 [project.optional-dependencies]
 prod = [
-    "databricks-cli",
     "black>=23.0",
     "flake8>=6.0",
     "pytest>=7.0",

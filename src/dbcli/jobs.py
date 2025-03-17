@@ -41,24 +41,22 @@ class DatabricksJobManager:
 
     def create_job(self, config_file: str):
         config = self._load_config(config_file)
-        # Extract the inner dictionary from the 'new_cluster' key
-        # cluster_config = config.cluster.get("new_cluster")
-
-        # new_cluster_instance = jobs.JobCluster.parse_obj(
-        #     {"job_cluster_key": "new_cluster", **cluster_config}
-        # )
-
+        
         return self.client.jobs.create(
             name=config.name,
             tasks=[
                 jobs.Task(
                     task_key=config.name.lower().replace(" ", "_"),
-                    notebook_task=jobs.NotebookTask(notebook_path=config.notebook_path),
-                    new_cluster=jobs.JobCluster(**config.cluster),
+                    notebook_task=jobs.NotebookTask(
+                        notebook_path=config.notebook_path,
+                        source=jobs.Source("WORKSPACE")
+                    ),
+                    new_cluster=jobs.ClusterSpec(**config.cluster),
                 )
             ],
             schedule=jobs.CronSchedule(
-                quartz_cron_expression=config.schedule, timezone_id="UTC"
+                quartz_cron_expression=config.schedule,
+                timezone_id="UTC"
             ),
             tags=config.tags,
         )
